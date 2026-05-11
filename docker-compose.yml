@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  salon-app:
+    image: jenz-salon
+    container_name: salon-container
+    ports:
+      - "80:80"
+    restart: always

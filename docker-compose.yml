@@ -1,9 +1,50 @@
 version: '3'
 
 services:
-  salon-app:
-    image: jenz-salon
-    container_name: salon-container
+
+  frontend:
+    build: .
+    container_name: salon-frontend
+
     ports:
       - "80:80"
+
     restart: always
+
+  backend:
+    build: ./backend
+    container_name: salon-backend
+
+    depends_on:
+      - database
+
+    ports:
+      - "3000:3000"
+
+    restart: always
+
+    environment:
+      DB_HOST: database
+      DB_USER: salonuser
+      DB_PASSWORD: salonpass
+      DB_NAME: salondb
+
+  database:
+    image: postgres:15
+    container_name: salon-database
+
+    restart: always
+
+    environment:
+      POSTGRES_USER: salonuser
+      POSTGRES_PASSWORD: salonpass
+      POSTGRES_DB: salondb
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

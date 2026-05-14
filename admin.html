@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Admin Dashboard</title>
+
+    <style>
+
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: gold;
+            font-size: 50px;
+        }
+
+        button {
+
+            padding: 12px 25px;
+            font-size: 18px;
+            background-color: gold;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .booking-card {
+
+            border: 1px solid white;
+            padding: 20px;
+            margin: 20px auto;
+            width: 320px;
+            background-color: #111;
+        }
+
+        .delete-btn {
+
+            background-color: crimson;
+            color: white;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Admin Dashboard</h1>
+
+    <button onclick="loadBookings()">
+        Load Bookings
+    </button>
+
+    <div id="bookings"></div>
+
+    <script>
+
+        async function loadBookings() {
+
+            const response =
+                await fetch(
+                    'http://54.216.51.41:3000/bookings'
+                );
+
+            const bookings =
+                await response.json();
+
+            let output = '';
+
+            bookings.forEach(function (booking) {
+
+                output +=
+                    '<div class="booking-card">' +
+
+                    '<h3>' +
+                    booking.customer_name +
+                    '</h3>' +
+
+                    '<p>Service: ' +
+                    booking.service +
+                    '</p>' +
+
+                    '<p>Date: ' +
+                    booking.appointment_date +
+                    '</p>' +
+
+                    '<p>Status: ' +
+                    booking.status +
+                    '</p>' +
+
+                    '<button class="delete-btn" onclick="deleteBooking(' +
+                    booking.id +
+                    ')">Delete</button>' +
+
+                    '</div>';
+
+            });
+
+            document.getElementById(
+                'bookings'
+            ).innerHTML = output;
+        }
+
+        async function deleteBooking(id) {
+
+            await fetch(
+                'http://54.216.51.41:3000/bookings/' + id,
+                {
+                    method: 'DELETE'
+                }
+            );
+
+            loadBookings();
+        }
+
+    </script>
+
+</body>
+
+</html>

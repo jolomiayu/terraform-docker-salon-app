@@ -90,13 +90,13 @@ Node Exporter → Prometheus
 
 ## Main Booking Platform
 
-![Main App](screenshots/main-booking-platform.png)
+![Main App](screenshots/homepage.png)
 
 ---
 
 ## Admin Login
 
-![Admin Login](screenshots/admin-login.png)
+![Admin Login](screenshots/admin-dashboard.png)
 
 ---
 

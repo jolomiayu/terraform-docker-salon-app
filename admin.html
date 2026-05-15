@@ -20,6 +20,15 @@
             font-size: 50px;
         }
 
+        input {
+
+            display: block;
+            width: 300px;
+            margin: 15px auto;
+            padding: 12px;
+            font-size: 18px;
+        }
+
         button {
 
             padding: 12px 25px;
@@ -45,28 +54,91 @@
             color: white;
         }
 
+        #dashboard {
+
+            display: none;
+        }
+
     </style>
 
 </head>
 
 <body>
 
-    <h1>Admin Dashboard</h1>
+    <div id="login-section">
 
-    <button onclick="loadBookings()">
-        Load Bookings
-    </button>
+        <h1>Admin Login</h1>
 
-    <div id="bookings"></div>
+        <input
+            type="text"
+            id="username"
+            placeholder="Admin Username"
+        >
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Admin Password"
+        >
+
+        <button onclick="login()">
+            Login
+        </button>
+
+    </div>
+
+    <div id="dashboard">
+
+        <h1>Admin Dashboard</h1>
+
+        <button onclick="loadBookings()">
+            Load Bookings
+        </button>
+
+        <div id="bookings"></div>
+
+    </div>
 
     <script>
+
+        function login() {
+
+            const username =
+                document.getElementById(
+                    'username'
+                ).value;
+
+            const password =
+                document.getElementById(
+                    'password'
+                ).value;
+
+            if (
+                username === 'admin' &&
+                password === 'jenz123'
+            ) {
+
+                document.getElementById(
+                    'login-section'
+                ).style.display = 'none';
+
+                document.getElementById(
+                    'dashboard'
+                ).style.display = 'block';
+            }
+
+            else {
+
+                alert(
+                    'Invalid admin credentials'
+                );
+            }
+        }
 
         async function loadBookings() {
 
             const response =
-                await fetch(
-                    'http://54.216.51.41:3000/bookings'
-                );
+                await fetch('/bookings');
 
             const bookings =
                 await response.json();
@@ -86,10 +158,6 @@
                     booking.service +
                     '</p>' +
 
-                    '<p>Date: ' +
-                    booking.appointment_date +
-                    '</p>' +
-
                     '<p>Status: ' +
                     booking.status +
                     '</p>' +
@@ -99,7 +167,6 @@
                     ')">Delete</button>' +
 
                     '</div>';
-
             });
 
             document.getElementById(
@@ -110,7 +177,7 @@
         async function deleteBooking(id) {
 
             await fetch(
-                'http://54.216.51.41:3000/bookings/' + id,
+                '/bookings/' + id,
                 {
                     method: 'DELETE'
                 }
